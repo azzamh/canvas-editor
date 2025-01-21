@@ -46,23 +46,23 @@ export class Dialog {
 
   private _render() {
     const { title, data, onClose, onCancel, onConfirm } = this.options
-    // 渲染遮罩层
+    // Render mask layer
     const mask = document.createElement('div')
     mask.classList.add('dialog-mask')
     mask.setAttribute(EDITOR_COMPONENT, EditorComponent.COMPONENT)
     document.body.append(mask)
-    // 渲染容器
+    // Render container
     const container = document.createElement('div')
     container.classList.add('dialog-container')
     container.setAttribute(EDITOR_COMPONENT, EditorComponent.COMPONENT)
-    // 弹窗
+    // Dialog
     const dialogContainer = document.createElement('div')
     dialogContainer.classList.add('dialog')
     container.append(dialogContainer)
-    // 标题容器
+    // Title container
     const titleContainer = document.createElement('div')
     titleContainer.classList.add('dialog-title')
-    // 标题&关闭按钮
+    // Title & close button
     const titleSpan = document.createElement('span')
     titleSpan.append(document.createTextNode(title))
     const titleClose = document.createElement('i')
@@ -75,15 +75,15 @@ export class Dialog {
     titleContainer.append(titleSpan)
     titleContainer.append(titleClose)
     dialogContainer.append(titleContainer)
-    // 选项容器
+    // Option container
     const optionContainer = document.createElement('div')
     optionContainer.classList.add('dialog-option')
-    // 选项
+    // Options
     for (let i = 0; i < data.length; i++) {
       const option = data[i]
       const optionItemContainer = document.createElement('div')
       optionItemContainer.classList.add('dialog-option__item')
-      // 选项名称
+      // Option name
       if (option.label) {
         const optionName = document.createElement('span')
         optionName.append(document.createTextNode(option.label))
@@ -92,7 +92,7 @@ export class Dialog {
           optionName.classList.add('dialog-option__item--require')
         }
       }
-      // 选项输入框
+      // Option input
       let optionInput:
         | HTMLInputElement
         | HTMLTextAreaElement
@@ -127,13 +127,13 @@ export class Dialog {
       this.inputList.push(optionInput)
     }
     dialogContainer.append(optionContainer)
-    // 按钮容器
+    // Button container
     const menuContainer = document.createElement('div')
     menuContainer.classList.add('dialog-menu')
-    // 取消按钮
+    // Cancel button
     const cancelBtn = document.createElement('button')
     cancelBtn.classList.add('dialog-menu__cancel')
-    cancelBtn.append(document.createTextNode('取消'))
+    cancelBtn.append(document.createTextNode('Cancel'))
     cancelBtn.type = 'button'
     cancelBtn.onclick = () => {
       if (onCancel) {
@@ -142,9 +142,9 @@ export class Dialog {
       this._dispose()
     }
     menuContainer.append(cancelBtn)
-    // 确认按钮
+    // Confirm button
     const confirmBtn = document.createElement('button')
-    confirmBtn.append(document.createTextNode('确定'))
+    confirmBtn.append(document.createTextNode('Confirm'))
     confirmBtn.type = 'submit'
     confirmBtn.onclick = () => {
       if (onConfirm) {
@@ -158,7 +158,7 @@ export class Dialog {
     }
     menuContainer.append(confirmBtn)
     dialogContainer.append(menuContainer)
-    // 渲染
+    // Render
     document.body.append(container)
     this.container = container
     this.mask = mask

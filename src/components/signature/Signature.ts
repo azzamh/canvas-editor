@@ -63,25 +63,25 @@ export class Signature {
 
   private _render() {
     const { onClose, onCancel, onConfirm } = this.options
-    // 渲染遮罩层
+    // Render mask layer
     const mask = document.createElement('div')
     mask.classList.add('signature-mask')
     mask.setAttribute(EDITOR_COMPONENT, EditorComponent.COMPONENT)
     document.body.append(mask)
-    // 渲染容器
+    // Render container
     const container = document.createElement('div')
     container.classList.add('signature-container')
     container.setAttribute(EDITOR_COMPONENT, EditorComponent.COMPONENT)
-    // 弹窗
+    // Popup
     const signatureContainer = document.createElement('div')
     signatureContainer.classList.add('signature')
     container.append(signatureContainer)
-    // 标题容器
+    // Title container
     const titleContainer = document.createElement('div')
     titleContainer.classList.add('signature-title')
-    // 标题&关闭按钮
+    // Title & close button
     const titleSpan = document.createElement('span')
-    titleSpan.append(document.createTextNode('插入签名'))
+    titleSpan.append(document.createTextNode('Insert Signature'))
     const titleClose = document.createElement('i')
     titleClose.onclick = () => {
       if (onClose) {
@@ -92,29 +92,29 @@ export class Signature {
     titleContainer.append(titleSpan)
     titleContainer.append(titleClose)
     signatureContainer.append(titleContainer)
-    // 操作区
+    // Operation area
     const operationContainer = document.createElement('div')
     operationContainer.classList.add('signature-operation')
-    // 撤销
+    // Undo
     const undoContainer = document.createElement('div')
     undoContainer.classList.add('signature-operation__undo')
     const undoIcon = document.createElement('i')
     const undoLabel = document.createElement('span')
-    undoLabel.innerText = '撤销'
+    undoLabel.innerText = 'Undo'
     undoContainer.append(undoIcon)
     undoContainer.append(undoLabel)
     operationContainer.append(undoContainer)
-    // 清空画布
+    // Clear canvas
     const trashContainer = document.createElement('div')
     trashContainer.classList.add('signature-operation__trash')
     const trashIcon = document.createElement('i')
     const trashLabel = document.createElement('span')
-    trashLabel.innerText = '清空'
+    trashLabel.innerText = 'Clear'
     trashContainer.append(trashIcon)
     trashContainer.append(trashLabel)
     operationContainer.append(trashContainer)
     signatureContainer.append(operationContainer)
-    // 绘图区
+    // Drawing area
     const canvasContainer = document.createElement('div')
     canvasContainer.classList.add('signature-canvas')
     const canvas = document.createElement('canvas')
@@ -124,13 +124,13 @@ export class Signature {
     canvas.style.height = `${this.canvasHeight / this.dpr}px`
     canvasContainer.append(canvas)
     signatureContainer.append(canvasContainer)
-    // 按钮容器
+    // Button container
     const menuContainer = document.createElement('div')
     menuContainer.classList.add('signature-menu')
-    // 取消按钮
+    // Cancel button
     const cancelBtn = document.createElement('button')
     cancelBtn.classList.add('signature-menu__cancel')
-    cancelBtn.append(document.createTextNode('取消'))
+    cancelBtn.append(document.createTextNode('Cancel'))
     cancelBtn.type = 'button'
     cancelBtn.onclick = () => {
       if (onCancel) {
@@ -139,9 +139,9 @@ export class Signature {
       this._dispose()
     }
     menuContainer.append(cancelBtn)
-    // 确认按钮
+    // Confirm button
     const confirmBtn = document.createElement('button')
-    confirmBtn.append(document.createTextNode('确定'))
+    confirmBtn.append(document.createTextNode('Confirm'))
     confirmBtn.type = 'submit'
     confirmBtn.onclick = () => {
       if (onConfirm) {
@@ -151,7 +151,7 @@ export class Signature {
     }
     menuContainer.append(confirmBtn)
     signatureContainer.append(menuContainer)
-    // 渲染
+    // Render
     document.body.append(container)
     this.container = container
     this.mask = mask

@@ -6,7 +6,7 @@
   height: 100%;
   opacity: .5;
   background: #000000;
-  z-index: 99;
+  z-index: 999;
 }
 
 .dialog-container {
@@ -16,7 +16,7 @@
   bottom: 0;
   left: 0;
   overflow: auto;
-  z-index: 999;
+  z-index: 9999;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -40,6 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: #000000;
 }
 
 .dialog-title i {
@@ -78,6 +79,7 @@
   appearance: none;
   user-select: none;
   font-family: inherit;
+  color: #000000;
 }
 
 .dialog-option__item input:focus,
@@ -117,6 +119,7 @@
 
 .dialog-menu__cancel {
   margin-right: 16px;
+  color: #000000;
 }
 
 .dialog-menu button[type='submit'] {
