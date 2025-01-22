@@ -10,7 +10,7 @@ export class I18n {
     ['en', en]
   ])
 
-  private currentLocale = 'zhCN'
+  private currentLocale = 'en'
 
   public registerLangMap(locale: string, lang: DeepPartial<ILang>) {
     const sourceLang = this.langMap.get(locale)
