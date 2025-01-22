@@ -1412,7 +1412,7 @@ export class CommandAdapt {
     })
   }
 
-  public async print() {
+  public async print(fileName: string,) : Promise<File>{
     const { scale, printPixelRatio, paperDirection, width, height } =
       this.options
     if (scale !== 1) {
@@ -1422,14 +1422,16 @@ export class CommandAdapt {
       pixelRatio: printPixelRatio,
       mode: EditorMode.PRINT
     })
-    printImageBase64(base64List, {
+    const result = printImageBase64(base64List, {
       width,
       height,
-      direction: paperDirection
-    })
+      direction: paperDirection,
+      },
+      fileName)
     if (scale !== 1) {
       this.draw.setPageScale(scale)
     }
+    return result
   }
 
   public replaceImageElement(payload: string) {

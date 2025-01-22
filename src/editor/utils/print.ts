@@ -92,8 +92,9 @@ async function processInChunks<T, R>(
 
 export async function printImageBase64(
   base64List: string[],
-  options: IPrintImageBase64Option
-) {
+  options: IPrintImageBase64Option,
+  fileName: string
+) : Promise<File> {
   const { width, height, direction = PaperDirection.VERTICAL } = options
   const iframe = document.createElement('iframe')
   // 离屏渲染
@@ -182,14 +183,17 @@ export async function printImageBase64(
     });
 
     // 5. Open PDF in a new tab
-    const pdfBlob = pdf.output('blob');
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    window.open(pdfUrl, '_blank');
+    const pdfBytes = pdf.output('arraybuffer')
+
+    if (!fileName.endsWith('.pdf') && fileName !== '')
+      fileName = `${fileName}.pdf`
+
+    const file = new File([pdfBytes], fileName, { type: 'application/pdf' })
+    if (file)
+      return file;
   } catch (error) {
     console.error('Error processing images:', error);
     throw error;
   }
-
-  // Clean up
-  doc.close()
+  return new File([], '')
 }
