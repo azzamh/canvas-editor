@@ -96,87 +96,59 @@ export async function printImageBase64(
   fileName: string
 ) : Promise<File> {
   const { width, height, direction = PaperDirection.VERTICAL } = options
-  const iframe = document.createElement('iframe')
-  // 离屏渲染
-  iframe.style.visibility = 'hidden'
-  iframe.style.position = 'absolute'
-  iframe.style.left = '0'
-  iframe.style.top = '0'
-  iframe.style.width = '0'
-  iframe.style.height = '0'
-  iframe.style.border = 'none'
-  document.body.append(iframe)
-
-  const contentWindow = iframe.contentWindow!
-  const doc = contentWindow.document
-  doc.open()
-
-  const container = document.createElement('div')
   const paperSize = convertPxToPaperSize(width, height)
 
-  // Build DOM preview (optional)
-  base64List.forEach(base64 => {
-    const image = document.createElement('img')
-    image.style.width =
-      direction === PaperDirection.HORIZONTAL
-        ? paperSize.height
-        : paperSize.width
-    image.style.height =
-      direction === PaperDirection.HORIZONTAL
-        ? paperSize.width
-        : paperSize.height
-    image.src = base64
-    container.append(image)
-  })
-
-  // 1. Determine PDF orientation
+  // Determine orientation based on dimensions and direction
   const orientation = direction === PaperDirection.HORIZONTAL ? 'landscape' : 'portrait'
 
-  // 2. Convert the mm dimension to numeric
+  // Convert dimensions to mm
   function extractMm(value: string) {
-    // e.g. "210mm" => 210
     return parseFloat(value.replace('mm', ''))
   }
 
   let pdfWidth = 210 // default A4 width in mm
   let pdfHeight = 297 // default A4 height in mm
 
-  // If `size` is recognized (a3, a4, a5) then use that
   if (paperSize.size) {
+    // Use standard paper sizes if matched
     pdfWidth = extractMm(paperSize.width)
     pdfHeight = extractMm(paperSize.height)
   } else {
-    // Basic px->mm conversion (0.264583 mm per px at ~96 dpi)
+    // Convert pixels to mm (approximate conversion)
     const pxToMm = 0.264583
     pdfWidth = width * pxToMm
     pdfHeight = height * pxToMm
   }
 
-  // 3. Create jsPDF
+  // Create PDF with correct orientation
   const pdf = new jsPDF({
     orientation,
     unit: 'mm',
     format: [pdfWidth, pdfHeight]
   })
 
-  // 4. Process images in chunks of 5
   try {
     const processedImages = await processInChunks(base64List, 5, async (chunk) => {
       return Promise.all(chunk.map(base64 => reencodeAsJpegNoResize(base64)));
     });
 
-    // Add processed images to PDF
+    // Add images with correct orientation
     processedImages.forEach((jpegBase64, i) => {
       if (i > 0) {
         pdf.addPage();
       }
+
+      // When in landscape, swap width and height for proper image fitting
+      const imageWidth = orientation === 'landscape' ? pdfHeight : pdfWidth;
+      const imageHeight = orientation === 'landscape' ? pdfWidth : pdfHeight;
+
       pdf.addImage(
         jpegBase64,
         'JPEG',
         0,
         0,
-        pdfWidth,
-        pdfHeight,
+        imageWidth,
+        imageHeight,
         undefined,
         'NONE'
       );
