@@ -3,7 +3,7 @@ import { IRegisterContextMenu } from '../../../interface/contextmenu/ContextMenu
 import { isApple } from '../../../utils/ua'
 import { Command } from '../../command/Command'
 const {
-  GLOBAL: { CUT, COPY, PASTE, SELECT_ALL, PRINT }
+  GLOBAL: { CUT, COPY, PASTE, PASTE_PLAIN,  SELECT_ALL, PRINT }
 } = INTERNAL_CONTEXT_MENU_KEY
 
 export const globalMenus: IRegisterContextMenu[] = [
@@ -37,7 +37,18 @@ export const globalMenus: IRegisterContextMenu[] = [
       return !payload.isReadonly && payload.editorTextFocus
     },
     callback: (command: Command) => {
-      command.executePaste()
+      command.executePaste({isPlainText: false})
+    }
+  },
+  {
+    key: PASTE_PLAIN,
+    i18nPath: 'contextmenu.global.paste',
+    shortCut: `${isApple ? '⌘' : 'Ctrl'}+ shift + V`,
+    when: payload => {
+      return !payload.isReadonly && payload.editorTextFocus
+    },
+    callback: (command: Command) => {
+      command.executePaste({isPlainText: true})
     }
   },
   {
@@ -51,16 +62,16 @@ export const globalMenus: IRegisterContextMenu[] = [
       command.executeSelectAll()
     }
   },
-  {
-    isDivider: true
-  },
-  {
-    key: PRINT,
-    i18nPath: 'contextmenu.global.print',
-    icon: 'print',
-    when: () => true,
-    callback: (command: Command) => {
-      command.executePrint()
-    }
-  }
+  // {
+  //   isDivider: true
+  // },
+  // {
+  //   key: PRINT,
+  //   i18nPath: 'contextmenu.global.print',
+  //   icon: 'print',
+  //   when: () => true,
+  //   callback: (command: Command) => {
+  //     command.executePrint()
+  //   }
+  // }
 ]

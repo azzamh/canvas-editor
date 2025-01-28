@@ -7,6 +7,7 @@ export const INTERNAL_CONTEXT_MENU_KEY = {
     CUT: 'globalCut',
     COPY: 'globalCopy',
     PASTE: 'globalPaste',
+    PASTE_PLAIN: 'globalPastePlain',
     SELECT_ALL: 'globalSelectAll',
     PRINT: 'globalPrint'
   },
